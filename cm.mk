@@ -16,3 +16,6 @@ PRODUCT_NAME := cm_i9500
 PRODUCT_BRAND := Samsung
 PRODUCT_MODEL := GT-I9500
 PRODUCT_MANUFACTURER := Samsung
+
+PRODUCT_COPY_FILES := \
+    device/samsung/i9500/kernel:kernel

@@ -36,8 +36,8 @@ BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 
 # Inline kernel building
-TARGET_KERNEL_SOURCE := kernel/samsung/exynos5410
-TARGET_KERNEL_CONFIG := cyanogenmod_i9500_defconfig
+#TARGET_KERNEL_SOURCE := kernel/samsung/exynos5410
+#TARGET_KERNEL_CONFIG := cyanogenmod_i9500_defconfig
 
 # fix this up by examining /proc/mtd on a running device
 BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
@@ -56,3 +56,22 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 
 # inherit from the proprietary version
 -include vendor/samsung/i9500/BoardConfigVendor.mk
+
+DEVICE_RESOLUTION := 1080x1920
+RECOVERY_SDCARD_ON_DATA := true
+#TWRP_EVENT_LOGGING := true
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+TW_NO_REBOOT_BOOTLOADER := true
+TW_HAS_DOWNLOAD_MODE := true
+BOARD_HAS_NO_REAL_SDCARD := true
+#TW_INCLUDE_CRYPTO := true
+#TW_INCLUDE_CRYPTO_SAMSUNG := true
+#TW_CRYPTO_FS_TYPE := "ext4"
+#TW_CRYPTO_REAL_BLKDEV := "/dev/block/mmcblk0p29"
+#TW_CRYPTO_MNT_POINT := "/data"
+#TW_CRYPTO_FS_OPTIONS := "nosuid,nodev,noatime,noauto_da_alloc,discard,journal_async_commit,errors=panic      wait,check,encryptable=footer"
+#TW_CRYPTO_FS_FLAGS := "0x00000406"
+#TW_CRYPTO_KEY_LOC := "footer"
