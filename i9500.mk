@@ -66,6 +66,7 @@ PRODUCT_PACKAGES += \
 
 # Bluetooth
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bluetooth/bt_did.conf:system/etc/bluetooth/bt_did.conf \
     $(LOCAL_PATH)/bluetooth/bcm4335_prepatch.hcd:system/vendor/firmware/bcm4335_prepatch.hcd
 
 # Browser
