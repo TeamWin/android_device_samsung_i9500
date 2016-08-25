@@ -21,40 +21,40 @@
 
 #include "corkscrew.h"
 
-ssize_t unwind_backtrace(void* backtrace, size_t ignore_depth, size_t max_depth)
+ssize_t unwind_backtrace(__unused void* backtrace, __unused size_t ignore_depth, __unused size_t max_depth)
 {
     return -1;
 }
 
-ssize_t unwind_backtrace_thread(pid_t tid, void* backtrace,
-        size_t ignore_depth, size_t max_depth)
+ssize_t unwind_backtrace_thread(__unused pid_t tid, __unused void* backtrace,
+        __unused size_t ignore_depth, __unused size_t max_depth)
 {
     return -1;
 }
 
-ssize_t unwind_backtrace_ptrace(pid_t tid, const void* context,
-        void* backtrace, size_t ignore_depth, size_t max_depth)
+ssize_t unwind_backtrace_ptrace(__unused pid_t tid, __unused const void* context,
+        __unused void* backtrace, __unused size_t ignore_depth, __unused size_t max_depth)
 {
     return -1;
 }
 
-void get_backtrace_symbols(const void* backtrace, size_t frames,
-        void* backtrace_symbols)
+void get_backtrace_symbols(__unused const void* backtrace, __unused size_t frames,
+        __unused void* backtrace_symbols)
 {
 }
 
-void get_backtrace_symbols_ptrace(const void* context,
-        const void* backtrace, size_t frames,
-        void* backtrace_symbols)
+void get_backtrace_symbols_ptrace(__unused const void* context,
+        __unused const void* backtrace, __unused size_t frames,
+        __unused void* backtrace_symbols)
 {
 }
 
-void free_backtrace_symbols(void* backtrace_symbols, size_t frames)
+void free_backtrace_symbols(__unused void* backtrace_symbols, __unused size_t frames)
 {
 }
 
-void format_backtrace_line(unsigned frameNumber, const void* frame,
-        const void* symbol, char* buffer, size_t bufferSize)
+void format_backtrace_line(__unused unsigned frameNumber, __unused const void* frame,
+        __unused const void* symbol, char* buffer, size_t bufferSize)
 {
     if (bufferSize > 0)
         buffer[0] = 0x00;
