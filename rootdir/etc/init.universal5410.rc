@@ -68,26 +68,26 @@ on post-fs-data
     mkdir /data/bcmnfc 0700 nfc nfc
     mkdir /data/bcmnfc/param 0700 nfc nfc
 
-    # DivX DRM
-    mkdir /efs/.files 0775
-    mkdir /efs/.files/.dx1 0775 media system
-    mkdir /efs/.files/.dm33 0775 media system
-    mkdir /efs/.files/.mp301 0775 media system
-
-    # TZ Playready DRM
-    mkdir /efc/drm 0700 drm system
+    # Added for TZ Playready DRM Support
+    mkdir /efs/drm 0774 drm system
     mkdir /efs/drm/playready 0775 drm system
+
+    # Permissions for Camera to flush cache buffers
+    chown system system /sys/devices/virtual/sec/sec_misc/drop_caches
 
 # SEAndroid Restore context for efs files
     restorecon_recursive /efs
 
-#-----------------------------------------------------------------------
+    setprop vold.post_fs_data_done 1
 
 on boot
     mount debugfs /sys/kernel/debug /sys/kernel/debug
 
     # Reduce reserved lowmem from ~48MB to ~12MB
-    write /proc/sys/vm/lowmem_reserve_ratio "128 128"
+    write /proc/sys/vm/lowmem_reserve_ratio "96 96"
+	
+    # Increase min_free_kbytes from 3183 to 5120
+    write /proc/sys/vm/min_free_kbytes 5120
 
     # Set up kernel tracing, but disable it by default
     chmod 0222 /sys/kernel/debug/tracing/trace_marker
@@ -96,15 +96,12 @@ on boot
     setprop ro.build.product universal_5410
     setprop ro.product.device universal_5410
 
-    # 4.3 needs this
-    chmod 0644 /proc/cmdline
-
 # Permissions for bluetooth
     setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
-    chown bluetooth bluetooth ro.bt.bdaddr_path
+    chown bluetooth net_bt_stack ro.bt.bdaddr_path
     chmod 0660 /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
 
 # Permissions for TouchScreen
     chmod 0660 /sys/class/sec/tsp/cmd
@@ -207,6 +204,8 @@ on boot
     chown system radio /sys/class/sensors/ssp_sensor/mcu_sleep_test
     chown system radio /sys/class/sensors/ssp_sensor/ori_poll_delay
     chown system radio /sys/class/sensors/ssp_sensor/mag_poll_delay
+    chown system radio /sys/class/sensors/ssp_sensor/ssp_flush
+    chown system radio /sys/class/sensors/ssp_sensor/meta_device
 
 # IR_LED
     chown system radio /sys/class/sec/sec_ir/ir_send
@@ -247,11 +246,6 @@ on boot
     chown system system /sys/class/sec/led/led_blink
     chown system system /sys/class/sec/led/led_br_lev
     chown system system /sys/class/sec/led/led_lowpower
-
-# Switch Device
-    chown system radio /sys/class/sec/switch/otg_test
-    chown system radio /sys/class/sec/switch/adc
-    chown system radio /sys/class/sec/switch/apo_factory
 
 # OTG_TEST
     chown system radio /sys/class/host_notify/usb_otg/booster
@@ -369,8 +363,6 @@ on boot
     chmod 0644 /sys/module/gsc/parameters/gsc_dbg
 
 # Switch Device
-    chown system radio /sys/class/sec/switch/uart_sel
-    chown system radio /sys/class/sec/switch/usb_sel
     chown system radio /sys/class/sec/switch/usb_state
     chown system radio /sys/class/sec/switch/chg_type
 
@@ -423,10 +415,6 @@ on boot
     chown system system /sys/class/timed_output/vibrator/pwm_default
     chmod 0644 /sys/class/timed_output/vibrator/pwm_threshold
     chown system system /sys/class/timed_output/vibrator/pwm_threshold
-
-# Torch
-    chown system camera /sys/class/leds/torch-sec1/brightness
-    chmod 0660 /sys/class/leds/torch-sec1/brightness
 
 on charger
 # Set cpu governor to powersave while in charging mode

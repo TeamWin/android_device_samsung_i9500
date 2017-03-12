@@ -63,7 +63,7 @@
 /dev/ssp_sensorhub		  0660	 system     system
 
 # TTY
-/dev/ttySAC0              0600   bluetooth  bluetooth
+/dev/ttySAC0              0660   bluetooth  net_bt_stack
 /dev/ttySAC1              0660   root       system
 /dev/ttySAC2              0660   root       system
 /dev/ttySAC3              0660   root       system
