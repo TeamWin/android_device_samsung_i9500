@@ -52,22 +52,6 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -aABDKL
-    disabled
-    oneshot
-
-service dhcpcd_p2p /system/bin/dhcpcd -aABKL
-    disabled
-    oneshot
-
-service iprenew_wlan0 /system/bin/dhcpcd -n
-    disabled
-    oneshot
-
-service iprenew_p2p /system/bin/dhcpcd -n
-    disabled
-    oneshot
-
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
