@@ -122,23 +122,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_SEPOLICY_DIRS += \
     device/samsung/i9500/sepolicy
 
-BOARD_SEPOLICY_UNION := \
-    bluetooth.te \
-    device.te \
-    drmserver.te \
-    file_contexts \
-    file.te \
-    gpsd.te \
-    mediaserver.te \
-    property_contexts \
-    property.te \
-    pvrsrvctl.te \
-    rild.te \
-    shell.te \
-    system_server.te \
-    ueventd.te \
-    wpa.te
-
 # Wifi
 BOARD_HAVE_SAMSUNG_WIFI          := true
 BOARD_WLAN_DEVICE                := bcmdhd
