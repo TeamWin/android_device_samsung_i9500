@@ -38,6 +38,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.recovery.universal5410.rc
 
+# ADB Debugging
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.adb.secure=0 \
+    ro.debuggable=1 \
+    ro.secure=0
+
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService \
