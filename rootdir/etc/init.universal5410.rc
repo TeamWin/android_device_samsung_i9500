@@ -428,6 +428,12 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     group system inet net_raw
     disabled
 
+# Sensorhub service
+service sensorhubservice /system/bin/sensorhubservice
+    class main
+    user system
+    group input
+
 # service for TZPR provisioning version check app
 service scranton_RD /system/bin/scranton_RD
      class main

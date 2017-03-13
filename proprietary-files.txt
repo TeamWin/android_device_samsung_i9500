@@ -80,6 +80,14 @@ lib/hw/sensors.universal5410.so
 lib/libakm.so
 lib/libsensirion_j1.so
 
+# Sensorhubs
+bin/sensorhubservice
+lib/libgnustl_shared.so
+lib/libsensorhub.so
+lib/libsensorhubcontext.so
+lib/libsensorhubservice.so
+lib/hw/sensorhubs.universal5410.so
+
 # Widevine
 lib/drm/libdrmwvmplugin.so
 lib/libdrmdecrypt.so
