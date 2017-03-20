@@ -1,0 +1,64 @@
+From 3f507316aeaad7c667fdbc388a692f04948a96a7 Mon Sep 17 00:00:00 2001
+From: Alberto Guanti <albertoguanti@gmail.com>
+Date: Mon, 20 Mar 2017 23:12:45 +0100
+Subject: [PATCH] DO NOT MERGE "[PATCH] Zygote: Stop breaking the entire
+ system"
+
+* This is just an hack required to boot the system until a proper fix to
+this error is found.
+
+11-17 22:34:48.294  2745  2745 E Zygote  : Unsupported st_mode 384
+11-17 22:34:48.295  2745  2745 F art     :
+art/runtime/jni_internal.cc:497] JNI FatalError called:
+frameworks/base/core/jni/com_android_internal_os_Zygote.cpp:478: Unable
+to construct file descriptor table.
+
+Change-Id: Ic295de39f1a5dc821a36b111d08916c7ed9bcb37
+---
+ core/jni/com_android_internal_os_Zygote.cpp | 3 ++-
+ core/jni/fd_utils-inl.h                     | 8 ++++----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/core/jni/com_android_internal_os_Zygote.cpp b/core/jni/com_android_internal_os_Zygote.cpp
+index 6118d1b36b9..6fdafb0a39e 100644
+--- a/core/jni/com_android_internal_os_Zygote.cpp
++++ b/core/jni/com_android_internal_os_Zygote.cpp
+@@ -517,7 +517,8 @@ static pid_t ForkAndSpecializeCommon(JNIEnv* env, uid_t uid, gid_t gid, jintArra
+     // Re-open all remaining open file descriptors so that they aren't shared
+     // with the zygote across a fork.
+     if (!gOpenFdTable->ReopenOrDetach()) {
+-      RuntimeAbort(env, __LINE__, "Unable to reopen whitelisted descriptors.");
++      //RuntimeAbort(env, __LINE__, "Unable to reopen whitelisted descriptors.");
++      ALOGE("FIXME: Unable to reopen whitelisted descriptors.");
+     }
+ 
+     if (sigprocmask(SIG_UNBLOCK, &sigchld, nullptr) == -1) {
+diff --git a/core/jni/fd_utils-inl.h b/core/jni/fd_utils-inl.h
+index 5b6b192d331..8c4edefd25c 100644
+--- a/core/jni/fd_utils-inl.h
++++ b/core/jni/fd_utils-inl.h
+@@ -106,8 +106,8 @@ class FileDescriptorInfo {
+     // with the child process across forks but those should have been closed
+     // before we got to this point.
+     if (!S_ISCHR(f_stat.st_mode) && !S_ISREG(f_stat.st_mode)) {
+-      ALOGE("Unsupported st_mode %d", f_stat.st_mode);
+-      return NULL;
++      ALOGE("FIXME: Unsupported st_mode %d", f_stat.st_mode);
++      //return NULL;
+     }
+ 
+     std::string file_path;
+@@ -116,8 +116,8 @@ class FileDescriptorInfo {
+     }
+ 
+     if (!IsWhitelisted(file_path)) {
+-      ALOGE("Not whitelisted : %s", file_path.c_str());
+-      return NULL;
++      ALOGE("FIXME: Not whitelisted : %s", file_path.c_str());
++      //return NULL;
+     }
+ 
+     // File descriptor flags : currently on FD_CLOEXEC. We can set these
+-- 
+2.12.0
+

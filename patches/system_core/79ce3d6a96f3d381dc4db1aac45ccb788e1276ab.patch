@@ -1,0 +1,35 @@
+From 79ce3d6a96f3d381dc4db1aac45ccb788e1276ab Mon Sep 17 00:00:00 2001
+From: William Bellavance <flintman@flintmancomputers.com>
+Date: Tue, 30 Aug 2016 08:04:38 -0400
+Subject: [PATCH] init:  if permissive dont back out of starting a service
+
+Requires external/libselinux change as well
+
+Change-Id: I3f2887930e15d09014c2594141ba4acbbc8d6d9d
+---
+ init/service.cpp | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/init/service.cpp b/init/service.cpp
+index ef59d7e..06f6b15 100644
+--- a/init/service.cpp
++++ b/init/service.cpp
+@@ -371,11 +371,13 @@ bool Service::Start() {
+             scon = ret_scon;
+             free(ret_scon);
+         }
+-        if (rc == 0 && scon == mycon) {
+-            ERROR("Service %s does not have a SELinux domain defined.\n", name_.c_str());
+-            free(mycon);
+-            free(fcon);
+-            return false;
++        if (selinux_status_getenforce() > 0) {
++            if (rc == 0 && scon == mycon) {
++                ERROR("Service %s does not have a SELinux domain defined.\n", name_.c_str());
++                free(mycon);
++                free(fcon);
++                return false;
++            }
+         }
+         free(mycon);
+         free(fcon);
