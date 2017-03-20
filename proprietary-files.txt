@@ -29,7 +29,7 @@ vendor/lib/libusc.so
 
 # GPS
 bin/gpsd
-lib/hw/gps.default.so
+lib/hw/gps.default.so:lib/hw/gps.universal5410.so
 lib/libwrappergps.so
 
 # HWC
