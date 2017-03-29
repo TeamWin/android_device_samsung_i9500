@@ -91,7 +91,6 @@ BOARD_USES_VIRTUAL_DISPLAY := true
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
 
 # Charger
-BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 RED_LED_PATH := "/sys/class/leds/led_r/brightness"
