@@ -1,0 +1,2 @@
+# /system/vendor/lib/liblvverx_3.20.03.so
+allow audioserver system_file:file execmod;

@@ -1,0 +1,12 @@
+# /dev/block/mmcblk0p[0-9]
+allow ueventd emmcblk_device:blk_file create_file_perms;
+
+# /sys/devices/virtual/misc/multipdp/uevent
+allow ueventd sysfs_multipdp_writable:file rw_file_perms;
+
+# denied { relabelfrom } name="mmcblk0p1"
+# denied { relabelto } name="mmcblk0p1"
+allow ueventd emmcblk_device:blk_file { relabelfrom relabelto };
+
+# /sys/devices/virtual/camera/rear/rear_camfw
+allow ueventd video_device:file getattr;

@@ -1,5 +1,0 @@
-type bluetooth_device, dev_type;
-type cbd_device, dev_type;
-type radio_block_device, dev_type;
-type rfkill_device, dev_type;
-type secmem_device, dev_type;

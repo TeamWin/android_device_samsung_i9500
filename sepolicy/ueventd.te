@@ -1,1 +1,0 @@
-allow ueventd sysfs_radio:file rw_file_perms;

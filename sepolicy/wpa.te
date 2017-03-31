@@ -1,3 +1,0 @@
-allow wpa efs_file:dir search;
-allow wpa rfkill_device:chr_file r_file_perms;
-allow wpa wpa_efs_file:file r_file_perms;

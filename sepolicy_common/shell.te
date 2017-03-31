@@ -1,0 +1,2 @@
+# exfat external sd card
+allow untrusted_app exfat:file read;

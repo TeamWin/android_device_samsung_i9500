@@ -412,6 +412,8 @@ on charger
 # Set watchdog timer to 30 seconds and pet it every 10 seconds to get a 20 second margin
 service watchdogd /sbin/watchdogd 10 20
     class core
+    seclabel u:r:watchdogd:s0
+    disabled
 
 # 3D init
 service pvrsrvctl /system/bin/pvrsrvctl
@@ -459,6 +461,7 @@ service mobicore /system/bin/mcDriverDaemon \
 service battery_charger /sbin/healthd -c
     class charger
     critical
+    seclabel u:r:healthd:s0
 
 # CyanogenMod Performance Profiles
 # Powersave

@@ -1,0 +1,10 @@
+/dev/link_pm								u:object_r:radio_device:s0
+/dev/network_throughput							u:object_r:radio_device:s0
+
+/data/misc/radio(/.*)?							u:object_r:radio_data_file:s0
+
+/system/bin/cbd								u:object_r:cpboot-daemon_exec:s0
+/system/bin/modemloader							u:object_r:modemloader_exec:s0
+
+# CP device
+/dev/spi_boot_link							u:object_r:radio_device:s0

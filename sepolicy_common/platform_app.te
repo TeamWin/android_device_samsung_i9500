@@ -1,0 +1,3 @@
+allow platform_app exfat:dir { open read };
+allow platform_app exfat:file { getattr read };
+allow platform_app exfat:dir search;

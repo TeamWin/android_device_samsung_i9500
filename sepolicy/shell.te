@@ -1,2 +1,0 @@
-# Remote execution from cbd
-allow shell cbd_device:chr_file rw_file_perms;

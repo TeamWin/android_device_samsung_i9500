@@ -137,7 +137,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
-    device/samsung/i9500/sepolicy
+    device/samsung/i9500/sepolicy_common \
+    device/samsung/i9500/sepolicy_specific
 
 # Sensors
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true

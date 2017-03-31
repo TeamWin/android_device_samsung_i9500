@@ -1,0 +1,70 @@
+/dev/srp								u:object_r:audio_device:s0
+
+/dev/ttySAC0								u:object_r:hci_attach_dev:s0
+/dev/ttySAC1								u:object_r:gps_device:s0
+/dev/ttySAC[0-9]*            u:object_r:gps_device:s0
+/dev/s5p-smem								u:object_r:secmem_device:s0
+/dev/ump								u:object_r:ump_device:s0
+
+/dev/mobicore								u:object_r:tee_device:s0
+/dev/mobicore-user							u:object_r:tee_device:s0
+
+/dev/v4l-subdev[0-9]*							u:object_r:video_device:s0
+/dev/media[0-2]*							u:object_r:camera_device:s0
+/dev/m2m1shot_jpeg           u:object_r:camera_device:s0
+
+/dev/video16								u:object_r:audio_device:s0
+/dev/video17								u:object_r:video_device:s0
+/dev/video18								u:object_r:video_device:s0
+/dev/video19								u:object_r:video_device:s0
+
+/dev/fimg2d								u:object_r:video_device:s0
+
+/dev/video40								u:object_r:camera_device:s0
+/dev/video41								u:object_r:camera_device:s0
+/dev/video42								u:object_r:camera_device:s0
+/dev/video43								u:object_r:camera_device:s0
+/dev/video44								u:object_r:camera_device:s0
+/dev/media2								u:object_r:camera_device:s0
+
+/dev/block/mmcblk0p[0-9]*						u:object_r:emmcblk_device:s0
+
+/efs/bluetooth(/.*)?							u:object_r:bluetooth_data_file:s0
+
+/efs/FactoryApp(/.*)?							u:object_r:app_efs_file:s0
+/efs/imei(/.*)?								u:object_r:imei_efs_file:s0
+/efs/nv_data.bin(.*)							u:object_r:bin_nv_data_efs_file:s0
+
+# camera
+/sys/devices/virtual/camera/.*/.*_camfw					u:object_r:camera_device:s0
+
+/dev/umts.*								u:object_r:mif_device:s0
+/dev/ehci_power								u:object_r:mif_device:s0
+
+/sys/class/lcd(/.*)?							u:object_r:sysfs_writable:s0
+/sys/devices/15510000.usb/ehci_power					u:object_r:sysfs_usb_power_writable:s0
+/sys/devices/10f24000.mipi-lli/lli_control				u:object_r:sysfs_mipi_writable:s0
+/sys/class/tcon/tcon/psr_hsync					u:object_r:sysfs_writable:s0
+
+/sys/class/mdnie/mdnie/scenario						u:object_r:sysfs_mdnie_writable:s0
+
+/sys/devices/virtual/misc/multipdp(/.*)					u:object_r:sysfs_multipdp_writable:s0
+
+/data/camera(/.*)?							u:object_r:camera_data_file:s0
+
+/data/\.gps\.interface\.pipe\.to_gpsd					u:object_r:gps_data_file:s0
+/data/\.gps\.interface\.pipe\.to_jni					u:object_r:gps_data_file:s0
+/data/system/gps(/.*)?							u:object_r:gps_data_file:s0
+
+/data/app/tlcd_sock							u:object_r:drmserver_socket:s0
+
+/data/.wifiver.info							u:object_r:wifi_data_file:s0
+
+/system/bin/mcDriverDaemon						u:object_r:tee_exec:s0
+/system/bin/gpsd							u:object_r:gpsd_exec:s0
+/system/bin/pvrsrvctl							u:object_r:pvrsrvctl_exec:s0
+/system/bin/wifiloader							u:object_r:wifiloader_exec:s0
+
+/sys/devices/platform/bcm4335_bluetooth/rfkill/rfkill0/state		u:object_r:sysfs_bluetooth_writable:s0
+/sys/devices/platform/bcm4335_bluetooth/rfkill/rfkill0/type		u:object_r:sysfs_bluetooth_writable:s0
+/sys/devices/virtual/sec/sec_touchkey/tsp_keys_enabled			u:object_r:sysfs_input_file:s0

@@ -1,0 +1,36 @@
+# /efs
+allow system_server efs_file:dir r_dir_perms;
+allow system_server efs_file:file { read open write };
+
+# /dev/mbin0
+allow system_server emmcblk_device:dir search;
+
+# WifiMachine
+allow system_server self:capability { sys_module };
+allow system_server wifi_efs_file:dir r_dir_perms;
+allow system_server wifi_efs_file:file r_file_perms;
+
+# Label the .gps.interface.pipe.to_jni pipe with gps_data_file.
+type_transition system_server system_data_file:fifo_file gps_data_file ".gps.interface.pipe.to_jni";
+allow system_server gps_data_file:fifo_file create_file_perms;
+allow system_server gps_data_file:dir rw_dir_perms;
+
+# mDNIE
+allow system_server sysfs_mdnie_writable:lnk_file rw_file_perms;
+allow system_server sysfs_mdnie_writable:dir rw_dir_perms;
+allow system_server sysfs_mdnie_writable:file rw_file_perms;
+
+# lcd
+allow system_server sysfs_writable:dir search;
+
+# panel
+allow system_server sysfs_writable:lnk_file read;
+
+# FactoryApp
+allow system_server app_efs_file:dir search;
+
+# Unknown
+allow system_server user_profile_data_file:dir { read open };
+
+# tsp_keys_enabled
+allow system_server sysfs_input_file:file { read write };
