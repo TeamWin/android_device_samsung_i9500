@@ -34,3 +34,4 @@ ro.telephony.ril_class=ExynosXMM6360RIL
 
 # WiFi
 wifi.interface=wlan0
+wlan.wfd.hdcp=disable
