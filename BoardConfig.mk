@@ -51,6 +51,9 @@ TARGET_KERNEL_SOURCE := kernel/samsung/exynos5410
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
 
+# Audio
+TARGET_AUDIOHAL_VARIANT := samsung
+
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 BOARD_CUSTOM_BT_CONFIG := $(LOCAL_PATH)/bluetooth/libbt_vndcfg.txt
