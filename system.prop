@@ -14,6 +14,10 @@ ro.opengles.version=131072
 ro.sf.lcd_density=480
 ro.zygote.disable_gl_preload=1
 
+# Media
+media.stagefright.legacyencoder=1
+media.stagefright.less-secure=1
+
 # NFC
 nfc.app_log_level=2
 
