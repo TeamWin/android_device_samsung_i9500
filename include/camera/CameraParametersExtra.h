@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2016 The CyanogenMod Project
+ * Copyright (C) 2017 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +15,39 @@
  * limitations under the License.
  */
 
-#include "camera/CameraParametersExtraDurationTimer.h"
-
 #define CAMERA_PARAMETERS_EXTRA_C \
+\
+const char CameraParameters::PIXEL_FORMAT_YUV420SP_NV21[] = "nv21"; \
 const char CameraParameters::KEY_CITYID[] = "cityid"; \
 const char CameraParameters::KEY_WEATHER[] = "weather"; \
 const char CameraParameters::ISO_AUTO[] = "auto"; \
-const char CameraParameters::ISO_100[] = "100"; \
-const char CameraParameters::ISO_200[] = "200"; \
-const char CameraParameters::ISO_400[] = "400"; \
-const char CameraParameters::ISO_800[] = "800"; \
+const char CameraParameters::ISO_100[] = "ISO100"; \
+const char CameraParameters::ISO_200[] = "ISO200"; \
+const char CameraParameters::ISO_400[] = "ISO400"; \
+const char CameraParameters::ISO_800[] = "ISO800"; \
 \
-int CameraParameters::getInt64(const char *key) const { return -1; } \
+int CameraParameters::getInt64(const char *key __attribute__ ((unused))) const \
+{ \
+    return -1; \
+} \
+\
 extern "C" { \
     void acquire_dvfs_lock(void) { } \
     void release_dvfs_lock(void) { } \
 } \
-CAMERA_PARAMETERS_EXTRA_C_DURATION_TIMER \
-\
-/* LAST_LINE OF CAMERA_PARAMETERS_EXTRA_C, every line before this one *MUST* have
- * a backslash \ at the end of the line or else everything will break.
- */
 
 #define CAMERA_PARAMETERS_EXTRA_H \
-    static const char KEY_CITYID[]; \
-    static const char KEY_WEATHER[]; \
-    static const char ISO_AUTO[]; \
-    static const char ISO_100[]; \
-    static const char ISO_200[]; \
-    static const char ISO_400[]; \
-    static const char ISO_800[]; \
-    \
-    int getInt64(const char *key) const; \
-    \
+\
+int getInt64(const char *key) const; \
+\
+static const char PIXEL_FORMAT_YUV420SP_NV21[]; \
+static const char KEY_CITYID[]; \
+static const char KEY_WEATHER[]; \
+static const char ISO_AUTO[]; \
+static const char ISO_100[]; \
+static const char ISO_200[]; \
+static const char ISO_400[]; \
+static const char ISO_800[]; \
     /* LAST_LINE OF CAMERA_PARAMETERS_EXTRA_H, every line before this one *MUST* have
      * a backslash \ at the end of the line or else everything will break.
      */
