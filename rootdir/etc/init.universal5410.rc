@@ -2,6 +2,9 @@ import init.universal5410.usb.rc
 import init.universal5410.wifi.rc
 
 on init
+
+    export LD_SHIM_LIBS "/system/bin/gpsd|libdmitry.so"
+
     symlink /sdcard /storage/sdcard0
 
     mkdir /efs 0771 radio system

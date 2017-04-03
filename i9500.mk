@@ -80,6 +80,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps.conf:system/etc/gps.conf \
     $(LOCAL_PATH)/configs/gps.xml:system/etc/gps.xml
 
+PRODUCT_PACKAGES += \
+    libdmitry \
+    libstlport
+
 # GPU
 PRODUCT_PACKAGES += \
     pvrsrvctl \
