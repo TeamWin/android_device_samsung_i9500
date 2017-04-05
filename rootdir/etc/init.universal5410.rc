@@ -394,6 +394,16 @@ on boot
     chmod 0644 /sys/class/timed_output/vibrator/pwm_threshold
     chown system system /sys/class/timed_output/vibrator/pwm_threshold
 
+    # Remove symlinks to avoid issues with migrate after nandroid restores
+    rm -r -d /data/data/com.android.providers.telephony/databases
+    rm -r -d /data/data/com.android.providers.telephony/shared_prefs
+
+    symlink /data/user_de/0/com.android.providers.telephony/databases /data/data/com.android.providers.telephony/databases
+    symlink /data/user_de/0/com.android.providers.telephony/shared_prefs /data/data/com.android.providers.telephony/shared_prefs
+
+    restart cpboot-daemon
+    restart ril-daemon
+
 on charger
 # Set cpu governor to powersave while in charging mode
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
@@ -422,7 +432,12 @@ service pvrsrvctl /system/bin/pvrsrvctl
     group root
     oneshot
 
-service cpboot-daemon /system/bin/cbd -d -txmm626 -bh -mh -p 13
+# Parse hardware revision (needs to happen before cbd starts)
+service modemloader /system/bin/modemloader
+    class core
+    oneshot
+
+service cpboot-daemon /system/bin/cbd -d -txmm626x -bh -mh -p 13
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r shell

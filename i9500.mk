@@ -164,7 +164,10 @@ PRODUCT_PACKAGES += \
 # Radio
 PRODUCT_PACKAGES += \
     libsecril-client \
-    libsecril-client-sap
+    libsecril-client-sap \
+    modemloader \
+    libxml2 \
+    libprotobuf-cpp-full
 
 # Samsung
 PRODUCT_PACKAGES += \

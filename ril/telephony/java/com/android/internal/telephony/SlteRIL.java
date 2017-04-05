@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2014, The CyanogenMod Project. All rights reserved.
+ * Copyright (c) 2017, The LineageOS Project. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,25 +41,20 @@ import java.util.Collections;
  */
 public class SlteRIL extends RIL {
 
-    /**********************************************************
-     * SAMSUNG REQUESTS
-     **********************************************************/
     static final boolean RILJ_LOGD = true;
     static final boolean RILJ_LOGV = true;
 
-    private static final int RIL_REQUEST_DIAL_EMERGENCY_CALL = 10001;
+    /**********************************************************
+     * SAMSUNG RESPONSE
+     **********************************************************/
     private static final int RIL_UNSOL_STK_SEND_SMS_RESULT = 11002;
     private static final int RIL_UNSOL_STK_CALL_CONTROL_RESULT = 11003;
 
     private static final int RIL_UNSOL_DEVICE_READY_NOTI = 11008;
     private static final int RIL_UNSOL_AM = 11010;
-    private static final int RIL_UNSOL_DUN_PIN_CONTROL_SIGNAL = 11011;
-    private static final int RIL_UNSOL_DATA_SUSPEND_RESUME = 11012;
     private static final int RIL_UNSOL_SIM_PB_READY = 11021;
-    private static final int RIL_UNSOL_DUN = 11060;
 
-    private static final int RIL_UNSOL_WB_AMR_STATE = 20017;
-    private static final int RIL_UNSOL_SNDMGR_CLOCK_CTRL = 20022;
+    private Message mPendingGetSimStatus;
 
     // Number of per-network elements expected in QUERY_AVAILABLE_NETWORKS's response.
     // 4 elements is default, but many RILs actually return 5, making it impossible to
@@ -79,9 +75,8 @@ public class SlteRIL extends RIL {
         RILRequest rr =
             RILRequest.obtain(RIL_REQUEST_ANSWER, result);
 
-        if (RILJ_LOGD) {
-            riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
-        }
+        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+
         rr.mParcel.writeInt(1);
         rr.mParcel.writeInt(index);
 
@@ -109,40 +104,51 @@ public class SlteRIL extends RIL {
             case SmsManager.STATUS_ON_ICC_UNSENT:
                 return 2;
         }
-        
+
         // Default to READ.
         return 1;
     }
-    
+
     @Override
     public void writeSmsToSim(int status, String smsc, String pdu, Message response) {
         status = translateStatus(status);
-        
+
         RILRequest rr = RILRequest.obtain(RIL_REQUEST_WRITE_SMS_TO_SIM,
-                                          response);
-        
+                response);
+
         rr.mParcel.writeInt(status);
         rr.mParcel.writeString(pdu);
         rr.mParcel.writeString(smsc);
         rr.mParcel.writeInt(255);     /* Samsung */
-        
+
         if (RILJ_LOGV) {
             riljLog(rr.serialString() + "> "
                     + requestToString(rr.mRequest)
                     + " " + status);
         }
-        
+
         send(rr);
     }
 
     @Override
     public void
-    dial(String address, int clirMode, UUSInfo uusInfo, Message result) {
-        if (PhoneNumberUtils.isEmergencyNumber(address)) {
-            dialEmergencyCall(address, clirMode, result);
-            return;
-        }
+    getIccCardStatus(Message result) {
+        if (mState != RadioState.RADIO_ON) {
+            mPendingGetSimStatus = result;
+        } else {
+          //Note: This RIL request has not been renamed to ICC,
+          //       but this request is also valid for SIM and RUIM
+          RILRequest rr = RILRequest.obtain(RIL_REQUEST_GET_SIM_STATUS, result);
 
+          if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
+
+          send(rr);
+        }
+    }
+
+    @Override
+    public void
+    dial(String address, int clirMode, UUSInfo uusInfo, Message result) {
         RILRequest rr = RILRequest.obtain(RIL_REQUEST_DIAL, result);
 
         rr.mParcel.writeString(address);
@@ -165,23 +171,6 @@ public class SlteRIL extends RIL {
         send(rr);
     }
 
-    private void
-    dialEmergencyCall(String address, int clirMode, Message result) {
-        RILRequest rr;
-
-        rr = RILRequest.obtain(RIL_REQUEST_DIAL_EMERGENCY_CALL, result);
-        rr.mParcel.writeString(address);
-        rr.mParcel.writeInt(clirMode);
-        rr.mParcel.writeInt(0);        // CallDetails.call_type
-        rr.mParcel.writeInt(3);        // CallDetails.call_domain
-        rr.mParcel.writeString("");    // CallDetails.getCsvFromExtra
-        rr.mParcel.writeInt(0);        // Unknown
-
-        if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
-
-        send(rr);
-    }
-
     @Override
     protected Object
     responseIccCardStatus(Parcel p) {
@@ -193,6 +182,7 @@ public class SlteRIL extends RIL {
         cardStatus.mGsmUmtsSubscriptionAppIndex = p.readInt();
         cardStatus.mCdmaSubscriptionAppIndex = p.readInt();
         cardStatus.mImsSubscriptionAppIndex = p.readInt();
+
         int numApplications = p.readInt();
 
         // limit to maximum allowed applications
@@ -200,6 +190,7 @@ public class SlteRIL extends RIL {
             numApplications = IccCardStatus.CARD_MAX_APPS;
         }
         cardStatus.mApplications = new IccCardApplicationStatus[numApplications];
+
         for (int i = 0 ; i < numApplications ; i++) {
             appStatus = new IccCardApplicationStatus();
             appStatus.app_type       = appStatus.AppTypeFromRILInt(p.readInt());
@@ -225,7 +216,6 @@ public class SlteRIL extends RIL {
     protected Object
     responseCallList(Parcel p) {
         int num;
-        int voiceSettings;
         ArrayList<DriverCall> response;
         DriverCall dc;
 
@@ -246,21 +236,14 @@ public class SlteRIL extends RIL {
             dc.isMpty = (0 != p.readInt());
             dc.isMT = (0 != p.readInt());
             dc.als = p.readInt();
-            voiceSettings = p.readInt();
-            dc.isVoice = (0 == voiceSettings) ? false : true;
-
-            int call_type = p.readInt();            // Samsung CallDetails
-            int call_domain = p.readInt();          // Samsung CallDetails
-            String csv = p.readString();            // Samsung CallDetails
+            dc.isVoice = (0 != p.readInt());
 
             dc.isVoicePrivacy = (0 != p.readInt());
-
             dc.number = p.readString();
             if (RILJ_LOGV) {
                 riljLog("responseCallList dc.number=" + dc.number);
             }
-            int np = p.readInt();
-            dc.numberPresentation = DriverCall.presentationFromCLIP(np);
+            dc.numberPresentation = DriverCall.presentationFromCLIP(p.readInt());
             dc.name = p.readString();
             if (RILJ_LOGV) {
                 riljLog("responseCallList dc.name=" + dc.name);
@@ -318,9 +301,9 @@ public class SlteRIL extends RIL {
     responseSignalStrength(Parcel p) {
         int gsmSignalStrength = p.readInt() & 0xff;
         int gsmBitErrorRate = p.readInt();
-        int cdmaDbm = p.readInt() % 256;
+        int cdmaDbm = p.readInt();
         int cdmaEcio = p.readInt();
-        int evdoDbm = p.readInt() % 256;
+        int evdoDbm = p.readInt();
         int evdoEcio = p.readInt();
         int evdoSnr = p.readInt();
         int lteSignalStrength = p.readInt();
@@ -331,7 +314,7 @@ public class SlteRIL extends RIL {
         int tdScdmaRscp = p.readInt();
         // constructor sets default true, makeSignalStrengthFromRilParcel does not set it
         boolean isGsm = true;
-        
+
         if ((lteSignalStrength & 0xff) == 255 || lteSignalStrength == 99) {
             lteSignalStrength = 99;
             lteRsrp = SignalStrength.INVALID;
@@ -341,7 +324,7 @@ public class SlteRIL extends RIL {
         } else {
             lteSignalStrength &= 0xff;
         }
-        
+
         if (RILJ_LOGD)
             riljLog("gsmSignalStrength:" + gsmSignalStrength + " gsmBitErrorRate:" + gsmBitErrorRate +
                     " cdmaDbm:" + cdmaDbm + " cdmaEcio:" + cdmaEcio + " evdoDbm:" + evdoDbm +
@@ -349,12 +332,12 @@ public class SlteRIL extends RIL {
                     " lteSignalStrength:" + lteSignalStrength + " lteRsrp:" + lteRsrp +
                     " lteRsrq:" + lteRsrq + " lteRssnr:" + lteRssnr + " lteCqi:" + lteCqi +
                     " tdScdmaRscp:" + tdScdmaRscp + " isGsm:" + (isGsm ? "true" : "false"));
-        
+
         return new SignalStrength(gsmSignalStrength, gsmBitErrorRate, cdmaDbm, cdmaEcio, evdoDbm,
-                                  evdoEcio, evdoSnr, lteSignalStrength, lteRsrp, lteRsrq, lteRssnr, lteCqi,
-                                  tdScdmaRscp, isGsm);
+                evdoEcio, evdoSnr, lteSignalStrength, lteRsrp, lteRsrq, lteRssnr, lteCqi,
+                tdScdmaRscp, isGsm);
     }
-    
+
     private void constructGsmSendSmsRilRequest(RILRequest rr, String smscPDU, String pdu) {
         rr.mParcel.writeInt(2);
         rr.mParcel.writeString(smscPDU);
@@ -368,12 +351,12 @@ public class SlteRIL extends RIL {
     @Override
     public void sendSMSExpectMore(String smscPDU, String pdu, Message result) {
         Rlog.v(RILJ_LOG_TAG, "XMM7260: sendSMSExpectMore");
-        
+
         RILRequest rr = RILRequest.obtain(RIL_REQUEST_SEND_SMS, result);
         constructGsmSendSmsRilRequest(rr, smscPDU, pdu);
-        
+
         if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
-        
+
         send(rr);
     }
 
@@ -423,8 +406,6 @@ public class SlteRIL extends RIL {
         /* Remap incorrect respones or ignore them */
         switch (origResponse) {
             case RIL_UNSOL_STK_CALL_CONTROL_RESULT:
-            case RIL_UNSOL_WB_AMR_STATE: /* Wideband AMR callback */
-            case RIL_UNSOL_SNDMGR_CLOCK_CTRL: /* Wideband clock change */
             case RIL_UNSOL_DEVICE_READY_NOTI: /* Registrant notification */
             case RIL_UNSOL_SIM_PB_READY: /* Registrant notification */
                 Rlog.v(RILJ_LOG_TAG,
@@ -444,12 +425,8 @@ public class SlteRIL extends RIL {
             case RIL_UNSOL_AM:
                 ret = responseString(p);
                 break;
-            case RIL_UNSOL_DATA_SUSPEND_RESUME:
             case RIL_UNSOL_STK_SEND_SMS_RESULT:
                 ret = responseInts(p);
-                break;
-            case RIL_UNSOL_DUN_PIN_CONTROL_SIGNAL:
-                ret = responseVoid(p);
                 break;
             default:
                 // Rewind the Parcel
