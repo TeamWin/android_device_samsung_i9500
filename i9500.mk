@@ -67,6 +67,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/bluetooth/bcm4335_prepatch.hcd:system/vendor/firmware/bcm4335_prepatch.hcd
 
+# Browser
+PRODUCT_PACKAGES += \
+    Gello
+
 # Camera
 PRODUCT_PACKAGES += \
     camera.universal5410 \
