@@ -22,7 +22,20 @@
             <Limit name="measured-frame-rate-1280x720" range="100-200" />
             <Limit name="measured-frame-rate-1920x1080" range="60-60" />
         </MediaCodec>
+        <MediaCodec name="OMX.Exynos.H263.Decoder" type="video/3gpp" update="true" >
+            <Limit name="measured-frame-rate-176x144" range="1500-1800" />
+            <Limit name="measured-frame-rate-352x288" range="600-800" />
+            <Limit name="measured-frame-rate-720x480" range="360-360" />
+            <Limit name="measured-frame-rate-1280x720" range="135-135" />
+            <Limit name="measured-frame-rate-1920x1080" range="60-60" />
+        </MediaCodec>
         <MediaCodec name="OMX.Exynos.AVC.Decoder" type="video/avc" update="true" >
+            <Limit name="measured-frame-rate-320x240" range="500-700" />
+            <Limit name="measured-frame-rate-720x480" range="250-360" />
+            <Limit name="measured-frame-rate-1280x720" range="240-320" />
+            <Limit name="measured-frame-rate-1920x1080" range="120-150" />
+        </MediaCodec>
+        <MediaCodec name="OMX.Exynos.AVC.Decoder.secure" type="video/avc" update="true" >
             <Limit name="measured-frame-rate-320x240" range="500-700" />
             <Limit name="measured-frame-rate-720x480" range="250-360" />
             <Limit name="measured-frame-rate-1280x720" range="240-320" />
@@ -69,6 +82,12 @@
             <Limit name="measured-frame-rate-720x480" range="360-360" />
             <Limit name="measured-frame-rate-1280x720" range="166-173" />
             <Limit name="measured-frame-rate-1920x1080" range="83-83" />
+        </MediaCodec>
+        <MediaCodec name="OMX.Exynos.H263.Encoder" type="video/3gpp" update="true" >
+            <Limit name="measured-frame-rate-320x240" range="593-623" />
+            <Limit name="measured-frame-rate-720x480" range="360-360" />
+            <Limit name="measured-frame-rate-1280x720" range="135-135" />
+            <Limit name="measured-frame-rate-1920x1080" range="60-60" />
         </MediaCodec>
         <MediaCodec name="OMX.Exynos.MPEG4.Encoder" type="video/mp4v-es" update="true" >
             <Limit name="measured-frame-rate-320x240" range="593-623" />
