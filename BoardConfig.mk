@@ -153,6 +153,9 @@ LZMA_RAMDISK_TARGETS := recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5410
 TARGET_USERIMAGES_USE_EXT4 := true
 
+# Seccomp filters
+BOARD_SECCOMP_POLICY += device/samsung/i9500/seccomp
+
 # SELinux
 BOARD_SEPOLICY_DIRS += \
     device/samsung/i9500/sepolicy_common \
