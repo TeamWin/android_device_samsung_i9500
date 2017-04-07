@@ -2,8 +2,10 @@
 /dev/pvr_sync             0666   system     graphics
 /dev/ump                  0666   system     system
 /dev/ion                  0666   system     system
-/dev/video6               0660   media      media
-/dev/video7               0660   media      media
+/dev/video6               0660   mediacodec      mediadrm
+/dev/video7               0660   media      mediadrm
+/dev/video8               0660   media      mediadrm
+/dev/video9               0660   media      mediadrm
 
 # gscalers
 /dev/video23              0660   media      graphics
