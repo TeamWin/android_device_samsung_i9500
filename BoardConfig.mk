@@ -131,6 +131,9 @@ USE_OPENGL_RENDERER := true
 # IR
 IR_HAL_SUFFIX := universal5410
 
+# Linker
+LINKER_FORCED_SHIM_LIBS := /system/bin/gpsd|libdmitry.so
+
 # Media
 TARGET_OMX_LEGACY_RESCALING := true
 
