@@ -446,7 +446,7 @@ service cpboot-daemon /system/bin/cbd -d -txmm626x -bh -mh -p 13
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     user gps
-    group system inet net_raw
+    group system inet net_raw wakelock
 
 # Sensorhub service
 service sensorhubservice /system/bin/sensorhubservice
