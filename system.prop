@@ -3,6 +3,7 @@
 #
 
 # Audio
+audio_hal.force_voice_config=wide
 audio.offload.disable=1
 
 # Bluetooth
