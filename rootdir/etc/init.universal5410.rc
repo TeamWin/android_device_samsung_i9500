@@ -50,6 +50,18 @@ on post-fs-data
     # Permissions for Camera to flush cache buffers
     chown system system /sys/devices/virtual/sec/sec_misc/drop_caches
 
+    # Remove symlinks to avoid issues with migrate after nandroid restores
+    # Will be recreated at end of boot
+    rmdir /data/data/com.android.providers.telephony/databases
+    rmdir /data/data/com.android.providers.telephony/shared_prefs
+    rm /data/data/com.android.providers.telephony/databases
+    rm /data/data/com.android.providers.telephony/shared_prefs
+
+on property:sys.boot_completed=1
+    # Symlink directories to access telephony.db and preferred-apn.xml required by cbd
+    symlink /data/user_de/0/com.android.providers.telephony/databases /data/data/com.android.providers.telephony/databases
+    symlink /data/user_de/0/com.android.providers.telephony/shared_prefs /data/data/com.android.providers.telephony/shared_prefs
+
 # SEAndroid Restore context for efs files
     restorecon_recursive /efs
 
@@ -391,16 +403,6 @@ on boot
     chmod 0644 /sys/class/timed_output/vibrator/pwm_threshold
     chown system system /sys/class/timed_output/vibrator/pwm_threshold
 
-    # Remove symlinks to avoid issues with migrate after nandroid restores
-    rm -r -d /data/data/com.android.providers.telephony/databases
-    rm -r -d /data/data/com.android.providers.telephony/shared_prefs
-
-    symlink /data/user_de/0/com.android.providers.telephony/databases /data/data/com.android.providers.telephony/databases
-    symlink /data/user_de/0/com.android.providers.telephony/shared_prefs /data/data/com.android.providers.telephony/shared_prefs
-
-    restart cpboot-daemon
-    restart ril-daemon
-
 on charger
 # Set cpu governor to powersave while in charging mode
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor powersave
@@ -438,6 +440,9 @@ service cpboot-daemon /system/bin/cbd -d -txmm626x -bh -mh -p 13
     class main
     user root
     group radio cache inet misc audio sdcard_rw log sdcard_r shell
+
+on property:persist.sys.cpboot=disable
+    stop cpboot-daemon
 
 # GPS
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml

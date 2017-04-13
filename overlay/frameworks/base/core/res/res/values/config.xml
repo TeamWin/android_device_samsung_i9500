@@ -279,7 +279,7 @@
          don't support RIL_REQUEST_GET_RADIO_CAPABILITY
          format is UMTS|LTE|...
     -->
-    <string translatable="false" name="config_radio_access_family">GSM | WCDMA | GPRS | EDGE</string>
+    <string translatable="false" name="config_radio_access_family">GPRS|EDGE|WCDMA</string>
 
     <!-- Certain sensor firmwares break with having a batch
          size set. By setting this to false, devices can opt
