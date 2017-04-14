@@ -3,7 +3,8 @@
 ###########################################################
 
 RECOVERY_VARIANT := twrp
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/twrp.fstab
+
+TARGET_RECOVERY_DEVICE_MODULES += init.recovery.usb.rc
 
 # Do not link again libion_exynos.so
 BOARD_NEEDS_MEMORYHEAPION := false
