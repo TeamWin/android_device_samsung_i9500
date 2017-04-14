@@ -57,6 +57,7 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths_0.xml
 
 PRODUCT_PACKAGES += \
+    AudioWorkaround \
     audio.a2dp.default \
     audio.primary.universal5410 \
     audio.usb.default \
