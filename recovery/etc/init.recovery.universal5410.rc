@@ -1,5 +1,15 @@
 on init
+    start set_permissive
+
     # Touchscreen
     write /sys/devices/platform/s3c2440-i2c.0/i2c-0/0-0020/input/input1/enabled 0
     write /sys/devices/platform/s3c2440-i2c.0/i2c-0/0-0020/input/input1/power/control on
     write /sys/devices/platform/s3c2440-i2c.0/i2c-0/0-0020/input/input1/enabled 1
+
+on fs
+    mkdir /data/property 0700 root root
+
+on post-fs-data
+    # Remove symlinks to avoid issues with migrate after nandroid restores
+    rm /data/data/com.android.providers.telephony/databases
+    rm /data/data/com.android.providers.telephony/shared_prefs

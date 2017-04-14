@@ -187,6 +187,10 @@ LZMA_RAMDISK_TARGETS := recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5410
 TARGET_USERIMAGES_USE_EXT4 := true
 
+ifeq ($(WITH_TWRP),true)
+-include $(LOCAL_PATH)/twrp.mk
+endif
+
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)/releasetools
 TARGET_BOARD_INFO_FILE ?= $(LOCAL_PATH)/board-info.txt
