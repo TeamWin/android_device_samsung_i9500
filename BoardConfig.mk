@@ -193,7 +193,7 @@ endif
 
 # Releasetools
 TARGET_RELEASETOOLS_EXTENSIONS := $(LOCAL_PATH)/releasetools
-TARGET_BOARD_INFO_FILE ?= $(LOCAL_PATH)/board-info.txt
+TARGET_BOARD_INFO_FILE := device/samsung/i9500/board-info.txt
 
 # Seccomp filters
 BOARD_SECCOMP_POLICY := device/samsung/i9500/seccomp
