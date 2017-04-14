@@ -11,6 +11,7 @@
 
 /dev/block/platform/dw_mmc.0/by-name/BOOT				/boot			emmc		defaults															recoveryonly
 /dev/block/platform/dw_mmc.0/by-name/RECOVERY			/recovery		emmc		defaults															recoveryonly
+/dev/block/platform/dw_mmc.0/by-name/OTA				/misc			emmc		defaults															defaults
 
 # SD card
 /devices/platform/dw_mmc.2/mmc_host/mmc2*				auto			auto		defaults															voldmanaged=sdcard1:auto,encryptable=userdata
