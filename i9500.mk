@@ -245,6 +245,3 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-dalv
 
 # call hwui memory config
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk)
-
-# call the proprietary setup
-$(call inherit-product, vendor/samsung/i9500/i9500-vendor.mk)
