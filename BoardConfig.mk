@@ -186,6 +186,7 @@ BOARD_HAS_LARGE_FILESYSTEM := true
 LZMA_RAMDISK_TARGETS := boot,recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5410
 TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 
 ifeq ($(WITH_TWRP),true)
 -include $(LOCAL_PATH)/twrp.mk
