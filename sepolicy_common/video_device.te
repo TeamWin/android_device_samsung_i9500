@@ -1,2 +1,0 @@
-# denied { associate } for pid=1 comm="init" name="rear_camfw"
-allow video_device sysfs:filesystem associate;

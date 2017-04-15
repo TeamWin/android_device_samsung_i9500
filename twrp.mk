@@ -12,6 +12,8 @@ BOARD_NEEDS_MEMORYHEAPION := false
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
 
+TW_THEME := portrait_hdpi
+
 # Add logcat support
 TWRP_INCLUDE_LOGCAT := true
 # Use toolbox instead of busybox
